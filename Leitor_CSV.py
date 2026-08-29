@@ -32,23 +32,48 @@ class Discente:
 
 # Função para Ler o CSV e criar a Lista de Objetos
 def ler_csv(arquivo):
-   #TODO 
-    return
+    lista_discentes = []
+    
+    with open(arquivo, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+
+        for linha in reader:
+            discente = Discente(linha)
+            lista_discentes.append(discente)
+
+    return lista_discentes
 
 # Função para Imprimir um Aluno
 def imprimir_aluno(aluno):
-    #TODO 
-    return
+    print(f"Nome: {aluno.nome_discente}")
+    print(f"Matrícula: {aluno.matricula}")
+    print(f"Curso: {aluno.nome_curso}")
+    print("*" * 80)
 
 # Função para Salvar TODA a lista em Arquivo TXT
 def salvar_txt(lista_de_alunos, arquivo_saida):
-    #TODO 
+    with open(arquivo_saida, 'w', encoding='utf-8') as file:
+        for aluno in lista_de_alunos:
+            file.write(f"Nome: {aluno.nome_discente}\n")
+            file.write(f"Matrícula: {aluno.matricula}\n")
+            file.write(f"Curso: {aluno.nome_curso}\n")
+            file.write("-" * 30 + "\n")
     return
 
 def main():
-    #TODO 
+    # Ler o arquivo CSV
+    discentes = ler_csv('dis-csv-discentes-de-graduacao-de-2026.csv')
 
+    # Imprimir todos os alunos
+    print("Lista de Discentes:")
+    print("=" * 80)
+    for discente in discentes:
+        imprimir_aluno(discente)
+    
+    # Salvar em arquivo TXT
+    salvar_txt(discentes, 'discentes.txt')
+    print(f"\nArquivo TXT gerado! Total de alunos: {len(discentes)}")
 
 # Start do arquivo
 if __name__ == "__main__":
-    main()   
+    main()
