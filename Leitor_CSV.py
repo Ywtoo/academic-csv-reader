@@ -1,4 +1,5 @@
 import csv
+from dataclasses import dataclass, asdict
 
 # Molde do Aluno: dados estruturados para salvar e metodo para retornar
 class Discente:
@@ -44,19 +45,22 @@ def ler_csv(arquivo):
     return lista_discentes
 
 # Função para Imprimir um Aluno
-def imprimir_aluno(aluno):
-    print(f"Nome: {aluno.nome_discente}")
-    print(f"Matrícula: {aluno.matricula}")
-    print(f"Curso: {aluno.nome_curso}")
+def imprimir_aluno(discente):
+    dados = discente.get_dados()
+    
+    for campo, valor in dados.items():
+        print(f"{campo}: {valor}")
     print("*" * 80)
 
 # Função para Salvar TODA a lista em Arquivo TXT
-def salvar_txt(lista_de_alunos, arquivo_saida):
+def salvar_txt(discentes, arquivo_saida):
     with open(arquivo_saida, 'w', encoding='utf-8') as file:
-        for aluno in lista_de_alunos:
-            file.write(f"Nome: {aluno.nome_discente}\n")
-            file.write(f"Matrícula: {aluno.matricula}\n")
-            file.write(f"Curso: {aluno.nome_curso}\n")
+        
+        for discente in discentes:
+            dados = discente.get_dados()
+            
+            for campo, valor in dados.items():
+                file.write(f"{campo}: {valor}\n")
             file.write("-" * 30 + "\n")
     return
 
@@ -64,11 +68,9 @@ def main():
     # Ler o arquivo CSV
     discentes = ler_csv('dis-csv-discentes-de-graduacao-de-2026.csv')
     
-    # Imprimir todos os alunos
-    print("Lista de Discentes:")
-    print("=" * 80)
-    for discente in discentes:
-        imprimir_aluno(discente)
+    # Imprimir um dicente
+    indice_discente = input(f"Digite o índice do discente (0 a {len(discentes) - 1}): ")
+    imprimir_aluno(discentes[int(indice_discente)])
     
     # Salvar em arquivo TXT
     salvar_txt(discentes, 'discentes.txt')
